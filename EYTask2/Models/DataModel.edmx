@@ -1,0 +1,332 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DataModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="DataModelStoreContainer">
+    <EntitySet Name="Circulations" EntityType="DataModel.Store.Circulations" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ClosingBalancies" EntityType="DataModel.Store.ClosingBalancies" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="OpeningBalancies" EntityType="DataModel.Store.OpeningBalancies" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Sheets" EntityType="DataModel.Store.Sheets" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="DataFiles" EntityType="DataModel.Store.DataFiles" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="CirculationSheet" Association="DataModel.Store.CirculationSheet">
+      <End Role="Circulation" EntitySet="Circulations" />
+      <End Role="Sheet" EntitySet="Sheets" />
+    </AssociationSet>
+    <AssociationSet Name="ClosingBalanceSheet" Association="DataModel.Store.ClosingBalanceSheet">
+      <End Role="ClosingBalance" EntitySet="ClosingBalancies" />
+      <End Role="Sheet" EntitySet="Sheets" />
+    </AssociationSet>
+    <AssociationSet Name="OpeningBalanceSheet" Association="DataModel.Store.OpeningBalanceSheet">
+      <End Role="OpeningBalance" EntitySet="OpeningBalancies" />
+      <End Role="Sheet" EntitySet="Sheets" />
+    </AssociationSet>
+    <AssociationSet Name="DataFileSheet" Association="DataModel.Store.DataFileSheet">
+      <End Role="DataFile" EntitySet="DataFiles" />
+      <End Role="Sheet" EntitySet="Sheets" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Circulations">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Debit" Type="float" Nullable="false" />
+    <Property Name="Credit" Type="float" Nullable="false" />
+    <Property Name="Sheet_Id" Type="int" Nullable="false" />
+    <Property Name="Sheet_FileId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClosingBalancies">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Asset" Type="float" Nullable="false" />
+    <Property Name="Liability" Type="float" Nullable="false" />
+    <Property Name="Sheet_Id" Type="int" Nullable="false" />
+    <Property Name="Sheet_FileId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="OpeningBalancies">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Asset" Type="float" Nullable="false" />
+    <Property Name="Liability" Type="float" Nullable="false" />
+    <Property Name="Sheet_Id" Type="int" Nullable="false" />
+    <Property Name="Sheet_FileId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Sheets">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="FileId" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Class" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="FileId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DataFiles">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="FileName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Uploaded" Type="bit" Nullable="false" />
+  </EntityType>
+  <Association Name="CirculationSheet">
+    <End Role="Circulation" Type="DataModel.Store.Circulations" Multiplicity="*" />
+    <End Role="Sheet" Type="DataModel.Store.Sheets" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Sheet">
+        <PropertyRef Name="Id" />
+        <PropertyRef Name="FileId" />
+      </Principal>
+      <Dependent Role="Circulation">
+        <PropertyRef Name="Sheet_Id" />
+        <PropertyRef Name="Sheet_FileId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ClosingBalanceSheet">
+    <End Role="ClosingBalance" Type="DataModel.Store.ClosingBalancies" Multiplicity="*" />
+    <End Role="Sheet" Type="DataModel.Store.Sheets" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Sheet">
+        <PropertyRef Name="Id" />
+        <PropertyRef Name="FileId" />
+      </Principal>
+      <Dependent Role="ClosingBalance">
+        <PropertyRef Name="Sheet_Id" />
+        <PropertyRef Name="Sheet_FileId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="OpeningBalanceSheet">
+    <End Role="OpeningBalance" Type="DataModel.Store.OpeningBalancies" Multiplicity="*" />
+    <End Role="Sheet" Type="DataModel.Store.Sheets" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Sheet">
+        <PropertyRef Name="Id" />
+        <PropertyRef Name="FileId" />
+      </Principal>
+      <Dependent Role="OpeningBalance">
+        <PropertyRef Name="Sheet_Id" />
+        <PropertyRef Name="Sheet_FileId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DataFileSheet">
+    <End Role="DataFile" Type="DataModel.Store.DataFiles" Multiplicity="1" />
+    <End Role="Sheet" Type="DataModel.Store.Sheets" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DataFile">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Sheet">
+        <PropertyRef Name="FileId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="DataModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="DataModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Circulations" EntityType="DataModel.Circulation" />
+          <EntitySet Name="ClosingBalancies" EntityType="DataModel.ClosingBalance" />
+          <EntitySet Name="OpeningBalancies" EntityType="DataModel.OpeningBalance" />
+          <EntitySet Name="Sheets" EntityType="DataModel.Sheet" />
+          <EntitySet Name="DataFiles" EntityType="DataModel.DataFile" />
+          <AssociationSet Name="CirculationSheet" Association="DataModel.CirculationSheet">
+            <End Role="Circulation" EntitySet="Circulations" />
+            <End Role="Sheet" EntitySet="Sheets" />
+          </AssociationSet>
+          <AssociationSet Name="ClosingBalanceSheet" Association="DataModel.ClosingBalanceSheet">
+            <End Role="ClosingBalance" EntitySet="ClosingBalancies" />
+            <End Role="Sheet" EntitySet="Sheets" />
+          </AssociationSet>
+          <AssociationSet Name="OpeningBalanceSheet" Association="DataModel.OpeningBalanceSheet">
+            <End Role="OpeningBalance" EntitySet="OpeningBalancies" />
+            <End Role="Sheet" EntitySet="Sheets" />
+          </AssociationSet>
+          <AssociationSet Name="DataFileSheet" Association="DataModel.DataFileSheet">
+            <End Role="DataFile" EntitySet="DataFiles" />
+            <End Role="Sheet" EntitySet="Sheets" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Circulation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Debit" Type="Double" Nullable="false" />
+          <Property Name="Credit" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Sheet" Relationship="DataModel.CirculationSheet" FromRole="Circulation" ToRole="Sheet" />
+        </EntityType>
+        <EntityType Name="ClosingBalance">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Asset" Type="Double" Nullable="false" />
+          <Property Name="Liability" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Sheet" Relationship="DataModel.ClosingBalanceSheet" FromRole="ClosingBalance" ToRole="Sheet" />
+        </EntityType>
+        <EntityType Name="OpeningBalance">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Asset" Type="Double" Nullable="false" />
+          <Property Name="Liability" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Sheet" Relationship="DataModel.OpeningBalanceSheet" FromRole="OpeningBalance" ToRole="Sheet" />
+        </EntityType>
+        <EntityType Name="Sheet">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="FileId" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Class" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FileId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Circulation" Relationship="DataModel.CirculationSheet" FromRole="Sheet" ToRole="Circulation" />
+          <NavigationProperty Name="ClosingBalance" Relationship="DataModel.ClosingBalanceSheet" FromRole="Sheet" ToRole="ClosingBalance" />
+          <NavigationProperty Name="OpeningBalance" Relationship="DataModel.OpeningBalanceSheet" FromRole="Sheet" ToRole="OpeningBalance" />
+          <NavigationProperty Name="DataFile" Relationship="DataModel.DataFileSheet" FromRole="Sheet" ToRole="DataFile" />
+        </EntityType>
+        <EntityType Name="DataFile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="FileName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Uploaded" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Sheet" Relationship="DataModel.DataFileSheet" FromRole="DataFile" ToRole="Sheet" />
+        </EntityType>
+        <Association Name="CirculationSheet">
+          <End Type="DataModel.Circulation" Role="Circulation" Multiplicity="0..1" />
+          <End Type="DataModel.Sheet" Role="Sheet" Multiplicity="1" />
+        </Association>
+        <Association Name="ClosingBalanceSheet">
+          <End Type="DataModel.ClosingBalance" Role="ClosingBalance" Multiplicity="0..1" />
+          <End Type="DataModel.Sheet" Role="Sheet" Multiplicity="1" />
+        </Association>
+        <Association Name="OpeningBalanceSheet">
+          <End Type="DataModel.OpeningBalance" Role="OpeningBalance" Multiplicity="0..1" />
+          <End Type="DataModel.Sheet" Role="Sheet" Multiplicity="1" />
+        </Association>
+        <Association Name="DataFileSheet">
+          <End Type="DataModel.DataFile" Role="DataFile" Multiplicity="1" />
+          <End Type="DataModel.Sheet" Role="Sheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DataFile">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sheet">
+              <PropertyRef Name="FileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DataModelStoreContainer" CdmEntityContainer="DataModelContainer">
+    <EntitySetMapping Name="Circulations">
+      <EntityTypeMapping TypeName="IsTypeOf(DataModel.Circulation)">
+        <MappingFragment StoreEntitySet="Circulations">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Debit" ColumnName="Debit" />
+          <ScalarProperty Name="Credit" ColumnName="Credit" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ClosingBalancies">
+      <EntityTypeMapping TypeName="IsTypeOf(DataModel.ClosingBalance)">
+        <MappingFragment StoreEntitySet="ClosingBalancies">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Asset" ColumnName="Asset" />
+          <ScalarProperty Name="Liability" ColumnName="Liability" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OpeningBalancies">
+      <EntityTypeMapping TypeName="IsTypeOf(DataModel.OpeningBalance)">
+        <MappingFragment StoreEntitySet="OpeningBalancies">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Asset" ColumnName="Asset" />
+          <ScalarProperty Name="Liability" ColumnName="Liability" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sheets">
+      <EntityTypeMapping TypeName="IsTypeOf(DataModel.Sheet)">
+        <MappingFragment StoreEntitySet="Sheets">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FileId" ColumnName="FileId" />
+          <ScalarProperty Name="Class" ColumnName="Class" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DataFiles">
+      <EntityTypeMapping TypeName="IsTypeOf(DataModel.DataFile)">
+        <MappingFragment StoreEntitySet="DataFiles">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FileName" ColumnName="FileName" />
+          <ScalarProperty Name="Uploaded" ColumnName="Uploaded" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="CirculationSheet" TypeName="DataModel.CirculationSheet" StoreEntitySet="Circulations">
+      <EndProperty Name="Sheet">
+        <ScalarProperty Name="Id" ColumnName="Sheet_Id" />
+        <ScalarProperty Name="FileId" ColumnName="Sheet_FileId" />
+      </EndProperty>
+      <EndProperty Name="Circulation">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ClosingBalanceSheet" TypeName="DataModel.ClosingBalanceSheet" StoreEntitySet="ClosingBalancies">
+      <EndProperty Name="Sheet">
+        <ScalarProperty Name="Id" ColumnName="Sheet_Id" />
+        <ScalarProperty Name="FileId" ColumnName="Sheet_FileId" />
+      </EndProperty>
+      <EndProperty Name="ClosingBalance">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="OpeningBalanceSheet" TypeName="DataModel.OpeningBalanceSheet" StoreEntitySet="OpeningBalancies">
+      <EndProperty Name="Sheet">
+        <ScalarProperty Name="Id" ColumnName="Sheet_Id" />
+        <ScalarProperty Name="FileId" ColumnName="Sheet_FileId" />
+      </EndProperty>
+      <EndProperty Name="OpeningBalance">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

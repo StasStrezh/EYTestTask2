@@ -1,0 +1,73 @@
+﻿@model IEnumerable<EYTask2.Models.DataFile>
+@{
+	ViewBag.Title = "Home Page";
+}
+
+@*<h1>ASP.NET</h1>
+	<p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
+	<p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>*@
+
+<div class="jumbotron">
+	@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+	{
+		<h2>Select file</h2>
+		<p style="color:red">@ViewBag.FileEror</p>
+		<div class="btn btn-default"><input type="file" name="Files" id="Files" multiple /></div>
+		<input type="submit" name="submit" class="btn btn-primary btn-lg" value="Upload" />
+	}
+	<table class="table">
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.FileName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Uploaded)
+			</th>
+			<th>
+
+			</th>
+
+			<th></th>
+		</tr>
+		<h3>
+			@foreach (var item in Model)
+			{
+				<div>
+					<tr>
+						<td>
+							@Html.DisplayFor(mItem => item.FileName)
+						</td>
+						<td>
+							@(item.Uploaded ? "Yes" : "No")
+						</td>
+						<td>
+
+							<button class="btn btn-default" btn-circle">
+								@Html.ActionLink("Upload Data", "GetDataFromFile", "Home", new { idFile = item.Id }, "")
+							</button>
+						</td>
+						<td>
+							<button class="btn btn-default" btn-circle">
+								@Html.ActionLink("Delete", "DeleteFile", new { idFile = item.Id })
+							</button>
+						</td>
+						<td>
+							@if (item.Uploaded)
+							{
+								<button class="btn btn-default" btn-circle">
+									@Html.ActionLink("ShowData", "ShowDataFromFile", "Home", new { idFile = item.Id }, "")
+								</button>
+							}
+						</td>
+						<hr />
+				</div>
+			}
+		</h3>
+	</table>
+</div>
+<div class="row">
+	@*<div class="col-md-4">
+			<h2>Select file</h2>
+			<p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+		</div>*@
+</div>

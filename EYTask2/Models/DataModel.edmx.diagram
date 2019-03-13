@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b853227ac37b43a0b4a1c8ca4129bb3d" Name="Diagram1" ZoomLevel="88" >
+        <EntityTypeShape EntityType="DataModel.Circulation" Width="1.5" PointX="10.5" PointY="0.5" />
+        <EntityTypeShape EntityType="DataModel.ClosingBalance" Width="1.5" PointX="10.5" PointY="2.625" />
+        <EntityTypeShape EntityType="DataModel.OpeningBalance" Width="1.5" PointX="8.125" PointY="4.25" />
+        <EntityTypeShape EntityType="DataModel.Sheet" Width="1.5" PointX="8" PointY="1.25" />
+        <EntityTypeShape EntityType="DataModel.DataFile" Width="1.5" PointX="5.625" PointY="1.5" />
+        <AssociationConnector Association="DataModel.CirculationSheet" />
+        <AssociationConnector Association="DataModel.ClosingBalanceSheet" />
+        <AssociationConnector Association="DataModel.OpeningBalanceSheet" />
+        <AssociationConnector Association="DataModel.DataFileSheet" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,171 @@
+﻿@model IEnumerable<EYTask2.Models.Sheet>
+@{
+	ViewBag.Title = "DocData";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Data from file</h2>
+<div>
+	<hr />
+	<button class="btn btn-default" btn-circle">
+		@Html.ActionLink("Back to List of files", "Index")
+	</button>
+	<hr />
+</div>
+<table class="table">
+	<tr>
+		<th rowspan="2" align="center">
+			@Html.DisplayNameFor(model => model.Id)
+		</th>
+		<th colspan="2" align="center">OpeningBalance</th>
+		<th colspan="2" align="center">Circulation</th>
+		<th colspan="2" align="center">ClosingBalance</th>
+	</tr>
+	<tr>
+		<th align="center">
+			@Html.DisplayNameFor(model => model.OpeningBalance.Asset)
+		</th>
+		<th align="center">
+			@Html.DisplayNameFor(model => model.OpeningBalance.Liability)
+		</th>
+		<th align="center">
+			@Html.DisplayNameFor(model => model.Circulation.Debit)
+		</th>
+		<th align="center">
+			@Html.DisplayNameFor(model => model.Circulation.Credit)
+		</th>
+		<th align="center">
+			@Html.DisplayNameFor(model => model.ClosingBalance.Asset)
+		</th>
+		<th align="center">
+			@Html.DisplayNameFor(model => model.ClosingBalance.Liability)
+		</th>
+	</tr>
+	@{
+		int counter = 0, counter2 = 10;
+		double oAsset = 0, oLiabl = 0, cDebit = 0, cCredit = 0, cAsset = 0, cLiabl = 0;
+		double oAssetClass = 0, oLiablClass = 0, cDebitClass = 0, cCreditClass = 0, cAssetClass = 0, cLiablClass = 0;
+	}
+	@foreach (var item in Model)
+	{
+		<tr>
+			@if (counter2 < item.Id / 100)
+			{
+
+				<td>
+					<span style="font-weight:bold">
+						@counter2
+					</span>
+				</td>
+				<td>
+					<span style="font-weight:bold"> @oAsset</span>
+				</td>
+				<td>
+					<span style="font-weight:bold"> @oLiabl </span>
+				</td>
+				<td>
+					<span style="font-weight:bold"> @cDebit </span>
+				</td>
+				<td>
+					<span style="font-weight:bold"> @cCredit </span>
+				</td>
+
+				<td>
+					<span style="font-weight:bold"> @oAsset </span>
+				</td>
+				<td>
+					<span style="font-weight:bold"> @cLiabl </span>
+				</td>
+			<tr></tr>
+			oAssetClass += oAsset;
+			oLiablClass += oLiabl;
+			cDebitClass += cDebit;
+			cCreditClass += cCredit;
+			cAssetClass += cAsset;
+			cLiablClass += cLiabl;
+			oAsset = 0.0;
+			oLiabl = 0.0;
+			cDebit = 0.0;
+			cCredit = 0.0;
+			cAsset = 0.0;
+			cLiabl = 0.0;
+			counter2 = item.Id / 100;
+		}
+			@if (counter < item.Id / 1000)
+			{
+				if (counter != 0)
+				{
+					<td>
+						<span style="font-weight:bold">
+							По классу
+
+						</span>
+					</td>
+					<td>
+						<span style="font-weight:bold"> @oAssetClass</span>
+					</td>
+					<td>
+						<span style="font-weight:bold"> @oLiablClass </span>
+					</td>
+					<td>
+						<span style="font-weight:bold"> @cDebitClass </span>
+					</td>
+					<td>
+						<span style="font-weight:bold"> @cCreditClass </span>
+					</td>
+
+					<td>
+						<span style="font-weight:bold"> @oAssetClass </span>
+					</td>
+					<td>
+						<span style="font-weight:bold"> @cLiablClass </span>
+					</td>
+					<tr></tr>
+
+					oAssetClass = 0.0;
+					oLiablClass = 0.0;
+					cDebitClass = 0.0;
+					cCreditClass = 0.0;
+					cAssetClass = 0.0;
+					cLiablClass = 0.0;
+				}
+				<td colspan="7" align="center">
+					<span style="font-weight:bold">
+						@Html.DisplayFor(modelItem => item.Class)
+					</span>
+				</td>
+				<tr></tr>
+				counter++;
+			}
+			@{
+				oAsset += item.OpeningBalance.Asset;
+				oLiabl += item.OpeningBalance.Liability;
+				cCredit += item.Circulation.Credit;
+				cDebit += item.Circulation.Debit;
+				cAsset += item.ClosingBalance.Asset;
+				cLiabl += item.ClosingBalance.Liability;
+			}
+			<td>
+				@Html.DisplayFor(modelItem => item.Id)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.OpeningBalance.Asset)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.OpeningBalance.Liability)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Circulation.Debit)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Circulation.Credit)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.ClosingBalance.Asset)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.ClosingBalance.Liability)
+			</td>
+			</tr>
+
+		}
+</table>
